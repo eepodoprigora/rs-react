@@ -10,12 +10,17 @@ export const App = () => {
 		'div',
 		{ className: 'App' },
 		createElement('header', { className: 'App-header' }, [
-			createElement('img', { src: logo, className: 'App-logo', alt: 'logo' }),
+			createElement('img', {
+				src: logo,
+				className: 'App-logo',
+				alt: 'logo',
+				key: 1,
+			}),
 			createElement(
 				'p',
-				null,
+				{ key: 2 },
 				'Edit ',
-				createElement('code', null, 'src/App.js'),
+				createElement('code', { key: 3 }, 'src/App.js'),
 				' and save to reload.',
 			),
 			createElement(
@@ -25,10 +30,11 @@ export const App = () => {
 					href: 'https://reactjs.org',
 					target: '_blank',
 					rel: 'noopener noreferrer',
+					key: 4,
 				},
 				'Learn React',
 			),
-			createElement('div', null, year),
+			createElement('div', { key: 5 }, year),
 		]),
 	);
 };
