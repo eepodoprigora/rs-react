@@ -9,9 +9,7 @@ export const App = () => {
 	return createElement(
 		'div',
 		{ className: 'App' },
-		createElement(
-			'header',
-			{ className: 'App-header' },
+		createElement('header', { className: 'App-header' }, [
 			createElement('img', { src: logo, className: 'App-logo', alt: 'logo' }),
 			createElement(
 				'p',
@@ -31,7 +29,7 @@ export const App = () => {
 				'Learn React',
 			),
 			createElement('div', null, year),
-		),
+		]),
 	);
 };
 
