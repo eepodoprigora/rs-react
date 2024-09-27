@@ -58,6 +58,7 @@ export const App = () => {
 		} else {
 			setOperand2((operand2) => operand2 + num);
 		}
+		if (done) setDone(false);
 	}
 
 	function clickOperand(item) {
