@@ -50,6 +50,7 @@ export const App = () => {
 	const [operand1, setOperand1] = useState('');
 	const [operand2, setOperand2] = useState('');
 	const [operator, setOperator] = useState('');
+	const [result, setResult] = useState('');
 	const [done, setDone] = useState(false);
 
 	function clickNum(num) {
@@ -58,6 +59,7 @@ export const App = () => {
 		} else {
 			setOperand2((operand2) => operand2 + num);
 		}
+		if (setDone) setDone(false);
 	}
 
 	function clickOperand(item) {
@@ -65,15 +67,31 @@ export const App = () => {
 			setOperand1('');
 			setOperand2('');
 			setOperator('');
+			setResult('');
 			if (done) setDone(false);
 		} else if (item === '+') {
 			setOperator('+');
 			if (done) setDone(false);
+			if (result) {
+				setOperand1(result);
+				setOperand2('');
+				setResult('');
+			}
 		} else if (item === '-') {
 			setOperator('-');
 			if (done) setDone(false);
+			if (result) {
+				setOperand1(result);
+				setOperand2('');
+				setResult('');
+			}
 		} else if (item === '=') {
 			setDone(true);
+			const res =
+				operator === '+'
+					? `${Number(operand1) + Number(operand2)}`
+					: `${Number(operand1) - Number(operand2)}`;
+			setResult(res);
 		}
 	}
 
@@ -81,7 +99,7 @@ export const App = () => {
 		<div className={styles.container}>
 			<div className={styles['inner-container']}>
 				<div className={`${styles.output} ${done ? styles.done : ''}`}>
-					{operand1 + operator + operand2}
+					{result ? result : operand1 + operator + operand2}
 				</div>
 				<div className={styles['buttons-container']}>
 					<div className={styles.buttons}>
