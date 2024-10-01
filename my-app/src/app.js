@@ -1,114 +1,183 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import styles from './app.module.css';
 
-const nums = [
-	{
-		id: '001',
-		value: '1',
-	},
-	{
-		id: '002',
-		value: '2',
-	},
-	{
-		id: '003',
-		value: '3',
-	},
-	{
-		id: '004',
-		value: '4',
-	},
-	{
-		id: '005',
-		value: '5',
-	},
-	{
-		id: '006',
-		value: '6',
-	},
-	{
-		id: '007',
-		value: '7',
-	},
-	{
-		id: '008',
-		value: '8',
-	},
-	{
-		id: '009',
-		value: '9',
-	},
-	{
-		id: '000',
-		value: '0',
-	},
-];
-
-const operators = ['C', '+', '-', '='];
-
 export const App = () => {
-	const [operand1, setOperand1] = useState('');
-	const [operand2, setOperand2] = useState('');
-	const [operator, setOperator] = useState('');
-	const [done, setDone] = useState(false);
+	// основной стейт
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [confirmPassword, setConfirmPassword] = useState('');
 
-	function clickNum(num) {
-		if (operator === '') {
-			setOperand1((operand1) => operand1 + num);
+	// стейт ошибок
+	const [emailError, setEmailError] = useState('');
+	const [passwordError, setPasswordError] = useState('');
+	const [confirmPasswordError, setConfirmPasswordError] = useState('');
+
+	const [showEmailError, setShowEmailError] = useState(false);
+	const [showPasswordError, setShowPasswordError] = useState(false);
+	const [showConfirmPasswordError, setShowConfirmPasswordError] = useState(false);
+
+	//валидность формы для кнопки
+	const [isFormValid, setIsFormValid] = useState(false);
+
+	// regex для email
+	const emailRegEx = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/;
+
+	// ref кнопки
+	const registerButtonRef = useRef(null);
+
+	// валидация
+	const validateEmail = (value) => {
+		if (!emailRegEx.test(value)) {
+			setEmailError('Некорректный Email');
+			return false;
 		} else {
-			setOperand2((operand2) => operand2 + num);
+			setEmailError('');
+			return true;
 		}
-		if (done) setDone(false);
-	}
+	};
 
-	function clickOperand(item) {
-		if (item === 'C') {
-			setOperand1('');
-			setOperand2('');
-			setOperator('');
-			if (done) setDone(false);
-		} else if (item === '+') {
-			setOperator('+');
-			if (done) setDone(false);
-		} else if (item === '-') {
-			setOperator('-');
-			if (done) setDone(false);
-		} else if (item === '=') {
-			setDone(true);
+	const validatePassword = (value) => {
+		if (value.length < 6) {
+			setPasswordError('Пароль должен быть не менее 6 символов');
+			return false;
+		} else {
+			setPasswordError('');
+			return true;
 		}
-	}
+	};
+
+	const validateConfirmPassword = (confirmPasswordValue, passwordValue) => {
+		if (confirmPasswordValue !== passwordValue) {
+			setConfirmPasswordError('Пароли не совпадают');
+			return false;
+		} else {
+			setConfirmPasswordError('');
+			return true;
+		}
+	};
+
+	const validateForm = (email, password, confirmPassword) => {
+		const isEmailValid = validateEmail(email);
+		const isPasswordValid = validatePassword(password);
+		const isConfirmPasswordValid = validateConfirmPassword(confirmPassword, password);
+
+		setIsFormValid(isEmailValid && isPasswordValid && isConfirmPasswordValid);
+	};
+
+	// обработчики
+	const handleEmailChange = ({ target }) => {
+		const newEmail = target.value;
+		setEmail(newEmail);
+		validateForm(newEmail, password, confirmPassword);
+	};
+
+	const handlePasswordChange = ({ target }) => {
+		const newPassword = target.value;
+		setPassword(newPassword);
+		validateForm(email, newPassword, confirmPassword);
+	};
+
+	const handleConfirmPasswordChange = ({ target }) => {
+		const newConfirmPassword = target.value;
+		setConfirmPassword(newConfirmPassword);
+		validateForm(email, password, newConfirmPassword);
+	};
+
+	// показ ошибок
+
+	const handleEmailBlur = () => {
+		setShowEmailError(true);
+		validateEmail(email);
+	};
+
+	const handlePasswordBlur = () => {
+		setShowPasswordError(true);
+		validatePassword(password);
+	};
+
+	const handleConfirmPasswordBlur = () => {
+		setShowConfirmPasswordError(true);
+		validateConfirmPassword(confirmPassword, password);
+	};
+
+	// Обработчик отправки формы
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		if (isFormValid) {
+			console.log({
+				email,
+				password,
+			});
+			registerButtonRef.current.focus();
+			handleReset();
+		}
+	};
+
+	// очищение формы
+	const handleReset = () => {
+		setEmail('');
+		setPassword('');
+		setConfirmPassword('');
+		setIsFormValid(false);
+	};
 
 	return (
 		<div className={styles.container}>
-			<div className={styles['inner-container']}>
-				<div className={`${styles.output} ${done ? styles.done : ''}`}>
-					{operand1 + operator + operand2}
+			<form onSubmit={handleSubmit} className={styles.form}>
+				<h1>Регистрация</h1>
+				<div className={styles.field}>
+					<label className={styles.label} htmlFor="email">
+						Email
+					</label>
+					<input
+						onChange={handleEmailChange}
+						onBlur={handleEmailBlur}
+						className={styles.input}
+						type="email"
+						value={email}
+					/>
+					{showEmailError && <div className={styles.error}>{emailError}</div>}
 				</div>
-				<div className={styles['buttons-container']}>
-					<div className={styles.buttons}>
-						{nums.map((num) => (
-							<button
-								onClick={() => clickNum(num.value)}
-								className={styles['button-num']}
-								key={num.id}
-							>
-								{num.value}
-							</button>
-						))}
-					</div>
-					<div className={styles.operators}>
-						{operators.map((operator) => (
-							<button
-								onClick={() => clickOperand(operator)}
-								key={operator}
-								className={`${styles['button-num']} ${styles['button-num--operator']}`}
-							>
-								{operator}
-							</button>
-						))}
-					</div>
+				<div className={styles.field}>
+					<label className={styles.label} htmlFor="password">
+						Пароль
+					</label>
+					<input
+						onChange={handlePasswordChange}
+						onBlur={handlePasswordBlur}
+						className={styles.input}
+						type="password"
+						value={password}
+					/>
+					{showPasswordError && (
+						<div className={styles.error}>{passwordError}</div>
+					)}
 				</div>
-			</div>
+				<div className={styles.field}>
+					<label className={styles.label} htmlFor="confirmPassword">
+						Повторите пароль
+					</label>
+					<input
+						onChange={handleConfirmPasswordChange}
+						onBlur={handleConfirmPasswordBlur}
+						className={styles.input}
+						type="password"
+						value={confirmPassword}
+					/>
+					{showConfirmPasswordError && (
+						<div className={styles.error}>{confirmPasswordError}</div>
+					)}
+				</div>
+
+				<button
+					className={styles.button}
+					type="sumbit"
+					ref={registerButtonRef}
+					disabled={!isFormValid}
+				>
+					Отправить
+				</button>
+			</form>
 		</div>
 	);
 };
