@@ -1,9 +1,81 @@
 .container {
 	text-align: center;
-	max-width: 950px;
+	max-width: 650px;
 	margin: 0 auto;
+	height: 100%;
+	margin-top: 80px;
+	margin-bottom: 80px;
+	position: relative;
+	background-color: #B99674;
+	padding: 40px;
+	border-radius: 40px;
+	color: #fff;
+}
+
+.loader {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	height: 15px;
+	aspect-ratio: 5;
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100vh;
+	justify-content: space-between;
+	--_g: no-repeat radial-gradient(farthest-side, #000 95%, #0000);
+	background:
+		var(--_g) calc(1*100%/3) 0,
+		var(--_g) calc(2*100%/3) 0;
+	background-size: 20% 100%;
+}
+
+.loader:before,
+.loader:after {
+	content: "";
+	height: inherit;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	background: #000;
+	animation: l41 1s infinite;
+}
+
+.loader:after {
+	--s: -1, -1;
+}
+
+@keyframes l41 {
+	0% {
+		transform: scale(var(--s, 1)) translate(0, 0)
+	}
+
+	33% {
+		transform: scale(var(--s, 1)) translate(0, 130%)
+	}
+
+	66% {
+		transform: scale(var(--s, 1)) translate(400%, 130%)
+	}
+
+	100% {
+		transform: scale(var(--s, 1)) translate(400%, 0)
+	}
+}
+
+.list-item {
+	list-style: none;
+	text-align: left;
+	margin-bottom: 10px;
+	padding-left: 20px;
+	position: relative;
+}
+
+.list-item::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+	display: block;
+	width: 14px;
+	height: 14px;
+	border: 1px solid #fff;
 }
