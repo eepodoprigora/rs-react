@@ -1,6 +1,9 @@
+import { ref, set } from 'firebase/database';
+import { db } from '../firebase';
+
 import { useState } from 'react';
 
-export const useRequestEditInputValue = (refreshTodos) => {
+export const useRequestEditInputValue = () => {
 	const [isEditing, setIsEditing] = useState(null);
 	const [editInputValue, setEditInputValue] = useState('');
 
@@ -10,12 +13,11 @@ export const useRequestEditInputValue = (refreshTodos) => {
 	};
 
 	const saveEditedTask = (id) => {
-		fetch(`http://localhost:3005/todos/${id}`, {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-			body: JSON.stringify({ title: editInputValue }),
+		const editTitleDbRef = ref(db, `todos/${id}`);
+
+		set(editTitleDbRef, {
+			title: editInputValue,
 		}).then(() => {
-			refreshTodos();
 			setIsEditing(null);
 		});
 	};

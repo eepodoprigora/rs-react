@@ -1,8 +1,11 @@
-export const useRequestDeleteTask = (refreshTodos) => {
+import { ref, remove } from 'firebase/database';
+import { db } from '../firebase';
+
+export const useRequestDeleteTask = () => {
 	const deleteTask = (id) => {
-		fetch(`http://localhost:3005/todos/${id}`, {
-			method: 'DELETE',
-		}).then(() => refreshTodos());
+		const itemDbRef = ref(db, `todos/${id}`);
+
+		remove(itemDbRef);
 	};
 
 	return {

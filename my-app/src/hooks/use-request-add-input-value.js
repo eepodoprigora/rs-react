@@ -1,6 +1,9 @@
+import { ref, push } from 'firebase/database';
+import { db } from '../firebase';
+
 import { useState } from 'react';
 
-export const useRequestAddInputValue = (refreshTodos) => {
+export const useRequestAddInputValue = () => {
 	const [addInputValue, setAddInputValue] = useState('');
 	const [isModalOpened, setIsModalOpened] = useState(false);
 
@@ -8,19 +11,14 @@ export const useRequestAddInputValue = (refreshTodos) => {
 		setAddInputValue(target.value);
 	};
 
+	const todosBdRef = ref(db, 'todos');
 	const addNewTask = () => {
-		fetch('http://localhost:3005/todos', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json;charset=utf-8' },
-			body: JSON.stringify({ title: addInputValue }),
-		})
-			.then((rawResponse) => rawResponse.json())
-			.then((response) => {
-				console.log('success', response);
-				refreshTodos();
-				setAddInputValue('');
-				setIsModalOpened(false);
-			});
+		push(todosBdRef, {
+			title: addInputValue,
+		}).then((response) => {
+			setAddInputValue('');
+			setIsModalOpened(false);
+		});
 	};
 
 	return {

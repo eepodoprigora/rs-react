@@ -15,7 +15,7 @@ import sortUpIcon from './assets/sort-up.svg';
 import sortDownIcon from './assets/sort-down.svg';
 
 export const App = () => {
-	const { todos, isLoading, refreshTodos } = useRequestGetTodos();
+	const { todos, isLoading } = useRequestGetTodos();
 
 	const {
 		addNewTask,
@@ -23,7 +23,7 @@ export const App = () => {
 		changeAddInputValue,
 		isModalOpened,
 		setIsModalOpened,
-	} = useRequestAddInputValue(refreshTodos);
+	} = useRequestAddInputValue();
 
 	const {
 		isEditing,
@@ -31,9 +31,9 @@ export const App = () => {
 		toggleEditingMode,
 		saveEditedTask,
 		setEditInputValue,
-	} = useRequestEditInputValue(refreshTodos);
+	} = useRequestEditInputValue();
 
-	const { deleteTask } = useRequestDeleteTask(refreshTodos);
+	const { deleteTask } = useRequestDeleteTask();
 
 	const {
 		searchQuery,
@@ -52,7 +52,7 @@ export const App = () => {
 						<div className={styles.loader}></div>
 					) : (
 						<>
-							{todos.length === 0 ? (
+							{!todos ? (
 								<div style={{ marginBottom: '20px' }}>
 									Сначала нужно что-то добавить
 								</div>
@@ -84,10 +84,11 @@ export const App = () => {
 									{filteredAndSortedTodos.length > 0 ? (
 										<ul className={styles.list}>
 											{filteredAndSortedTodos.map(
-												({ id, title }) => (
+												([id, { title }]) => (
 													<li
 														className={styles['list-item']}
 														key={id}
+														data-key={id}
 													>
 														{isEditing === id ? (
 															<input
