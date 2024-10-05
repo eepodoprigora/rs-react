@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { useRefreshTodos } from './use-refresh-todos';
 
-export const useRequestAddInputValue = (refreshTodos) => {
+export const useRequestAddInputValue = () => {
 	const [addInputValue, setAddInputValue] = useState('');
 	const [isModalOpened, setIsModalOpened] = useState(false);
+
+	const { refreshTodos } = useRefreshTodos();
 
 	const changeAddInputValue = ({ target }) => {
 		setAddInputValue(target.value);

@@ -1,12 +1,15 @@
 import { useState } from 'react';
+import { useRequestGetTodo } from './use-request-get-todo';
 
-export const useRequestEditInputValue = (refreshTodos) => {
+export const useRequestEditInputValue = () => {
 	const [isEditing, setIsEditing] = useState(null);
 	const [editInputValue, setEditInputValue] = useState('');
 
-	const toggleEditingMode = (id, currentTitle) => {
+	const { setTask, refreshTask } = useRequestGetTodo();
+
+	const toggleEditingMode = (id, currentTitle, initialTitle) => {
 		setIsEditing(id);
-		setEditInputValue(currentTitle);
+		setEditInputValue(currentTitle || initialTitle);
 	};
 
 	const saveEditedTask = (id) => {
@@ -14,11 +17,16 @@ export const useRequestEditInputValue = (refreshTodos) => {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json;charset=utf-8' },
 			body: JSON.stringify({ title: editInputValue }),
-		}).then(() => {
-			refreshTodos();
-			setIsEditing(null);
-		});
+		})
+			.then((response) => response.json())
+			.then((updatedTask) => {
+				console.log(updatedTask, 'updatedTask'); // Лог обновленной задачи
+				setTask(updatedTask); // Обновление состояния задачи
+				setIsEditing(null); // Сброс режима редактирования
+				refreshTask(); // Обновление флага для перезагрузки задачи
+			});
 	};
+
 	return {
 		isEditing,
 		editInputValue,

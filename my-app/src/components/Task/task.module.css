@@ -1,0 +1,26 @@
+.container {
+    max-width: 650px;
+    padding: 40px;
+    margin: 0 auto;
+    margin-top: 100px;
+    background: rgb(229, 241, 249);
+    border-radius: 40px;
+}
+
+.inner-title {
+    height: 150px;
+    border: 3px solid transparent;
+}
+
+.textarea {
+    resize: none;
+    background-color: transparent;
+    height: 150px;
+    width: 100%;
+    font-family: inherit;
+    font-size: 18px;
+}
+
+.action-buttons {
+    padding-top: 20px;
+}

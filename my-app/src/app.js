@@ -1,47 +1,14 @@
 import styles from './app.module.css';
+import { useRequestAddInputValue, useRequestGetTodos } from './hooks';
 
-import {
-	useRequestAddInputValue,
-	useRequestEditInputValue,
-	useRequestDeleteTask,
-	useRequestGetTodos,
-	useRequestSearchAndSortTodos,
-} from './hooks';
-
-import changeIcon from './assets/change-icon.svg';
-import deleteIcon from './assets/delete-icon.svg';
-import doneIcon from './assets/done-icon.svg';
-import sortUpIcon from './assets/sort-up.svg';
-import sortDownIcon from './assets/sort-down.svg';
+import { Modal } from './components/Modal/Modal';
+import { TodosList } from './components/TodosList/TodosList';
+import { FilterAndSort } from './components/FilterAndSort/FilterAndSort';
 
 export const App = () => {
 	const { todos, isLoading, refreshTodos } = useRequestGetTodos();
 
-	const {
-		addNewTask,
-		addInputValue,
-		changeAddInputValue,
-		isModalOpened,
-		setIsModalOpened,
-	} = useRequestAddInputValue(refreshTodos);
-
-	const {
-		isEditing,
-		editInputValue,
-		toggleEditingMode,
-		saveEditedTask,
-		setEditInputValue,
-	} = useRequestEditInputValue(refreshTodos);
-
-	const { deleteTask } = useRequestDeleteTask(refreshTodos);
-
-	const {
-		searchQuery,
-		sortDirection,
-		handleSearchChange,
-		handleSortChange,
-		filteredAndSortedTodos,
-	} = useRequestSearchAndSortTodos(todos);
+	const { isModalOpened, setIsModalOpened } = useRequestAddInputValue(refreshTodos);
 
 	return (
 		<>
@@ -58,124 +25,13 @@ export const App = () => {
 								</div>
 							) : (
 								<>
-									<div className={styles.fl}>
-										<input
-											type="text"
-											placeholder="Поиск по делам..."
-											value={searchQuery}
-											onChange={handleSearchChange} // Обработчик изменения запроса
-											className={styles.search}
-										/>
-										<button
-											className={`${styles['icon-wrapper']} ${styles['sort-icon']}`}
-											onClick={() => handleSortChange()}
-										>
-											<img
-												className={styles.icon}
-												src={
-													sortDirection === (null || 'asc')
-														? sortUpIcon
-														: sortDownIcon
-												}
-												alt="Сортировка"
-											/>
-										</button>
-									</div>
-									{filteredAndSortedTodos.length > 0 ? (
-										<ul className={styles.list}>
-											{filteredAndSortedTodos.map(
-												({ id, title }) => (
-													<li
-														className={styles['list-item']}
-														key={id}
-													>
-														{isEditing === id ? (
-															<input
-																className={styles.input}
-																value={editInputValue}
-																onChange={({ target }) =>
-																	setEditInputValue(
-																		target.value,
-																	)
-																}
-															/>
-														) : (
-															<div>{title}</div>
-														)}
-														<div>
-															{isEditing === id ? (
-																<button
-																	className={
-																		styles[
-																			'icon-wrapper'
-																		]
-																	}
-																	onClick={() =>
-																		saveEditedTask(id)
-																	}
-																>
-																	<img
-																		className={
-																			styles.icon
-																		}
-																		src={doneIcon}
-																		alt="Сохранить"
-																	/>
-																</button>
-															) : (
-																<button
-																	className={
-																		styles[
-																			'icon-wrapper'
-																		]
-																	}
-																	onClick={() =>
-																		toggleEditingMode(
-																			id,
-																			title,
-																		)
-																	}
-																>
-																	<img
-																		className={
-																			styles.icon
-																		}
-																		src={changeIcon}
-																		alt="Изменить"
-																	/>
-																</button>
-															)}
-															<button
-																className={
-																	styles['icon-wrapper']
-																}
-																onClick={() =>
-																	deleteTask(id)
-																}
-															>
-																<img
-																	className={
-																		styles.icon
-																	}
-																	src={deleteIcon}
-																	alt="Удалить"
-																/>
-															</button>
-														</div>
-													</li>
-												),
-											)}
-										</ul>
-									) : (
-										<div style={{ marginBottom: '20px' }}>
-											Ничего не нашлось
-										</div>
-									)}
+									<FilterAndSort />
+									<TodosList />
 								</>
 							)}
 
 							<button
-								className={styles.button}
+								className="button"
 								onClick={() => setIsModalOpened(true)}
 							>
 								Добавить
@@ -184,33 +40,11 @@ export const App = () => {
 					)}
 				</div>
 			</div>
-			<div className={`${styles.modal} ${isModalOpened ? styles.opened : ''}`}>
-				<div
-					className={styles['modal-overlay']}
-					onClick={() => setIsModalOpened(false)}
-				></div>
-				<div className={styles['modal-container']}>
-					<button
-						className={styles['modal-close']}
-						onClick={() => setIsModalOpened(false)}
-					></button>
-					<h2>Новое дело</h2>
-					<div className={styles['add-task']}>
-						<textarea
-							value={addInputValue}
-							onChange={changeAddInputValue}
-							className={styles['modal-input']}
-						/>
-						<button
-							className={styles.button}
-							disabled={!addInputValue.length}
-							onClick={() => addNewTask()}
-						>
-							Добавить
-						</button>
-					</div>
-				</div>
-			</div>
+			<Modal
+				isModalOpened={isModalOpened}
+				setIsModalOpened={setIsModalOpened}
+				refreshTodos={refreshTodos}
+			/>
 		</>
 	);
 };

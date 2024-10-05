@@ -1,0 +1,40 @@
+.list {
+    padding-left: 0;
+}
+
+.list-item {
+    list-style: none;
+    text-align: left;
+    padding: 20px;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, .3);
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    display: block;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #fff;
+}
+
+.task-item {
+    width: 70%;
+    height: 24px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.task-link {
+    text-decoration: none;
+    color: #fff;
+    width: 100%;
+    cursor: pointer;
+}

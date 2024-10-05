@@ -2,7 +2,9 @@
 	--accent-color-hue: 236;
 	--accent-color-saturation: 100%;
 	--disabled-color: #cfcfcf;
-	--blue-main: rgb(20, 118, 148)
+	--blue-main: rgb(20, 118, 148);
+
+	--main-font: 'Arial', 'sans-serif';
 }
 
 body {
@@ -21,4 +23,31 @@ code {
 *::before,
 *::after {
 	box-sizing: border-box;
+}
+
+body {
+	font-family: var(--main-font);
+	font-size: 18px;
+}
+
+.fl {
+	display: flex;
+}
+
+.button {
+	background: var(--blue-main);
+	color: #fff;
+	padding: 10px 20px;
+	border: none;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+.button[disabled] {
+	opacity: .7;
+	cursor: not-allowed;
+}
+
+.button:hover {
+	opacity: .7;
 }
