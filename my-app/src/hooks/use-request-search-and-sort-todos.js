@@ -38,11 +38,11 @@ export const useRequestSearchAndSortTodos = (todos) => {
 		}
 	};
 
-	const filteredAndSortedTodos = sortTodos(
-		todos.filter((todo) =>
-			todo.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase()),
-		),
+	const filteredTodos = todos?.filter(
+		(todo) =>
+			todo.title.toLowerCase().includes(debouncedSearchQuery.toLowerCase()) || [],
 	);
+	const filteredAndSortedTodos = sortTodos(filteredTodos);
 
 	return {
 		searchQuery,
