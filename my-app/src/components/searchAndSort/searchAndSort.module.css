@@ -1,0 +1,54 @@
+.icon-wrapper {
+    margin-left: 15px;
+    cursor: pointer;
+    transition: opacity .3s;
+    width: 20px;
+    height: 20px;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.icon {
+    width: 100%;
+    height: 100%;
+}
+
+.icon-wrapper:hover {
+    opacity: .5;
+}
+
+.sort-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--blue-main);
+    margin-left: 0;
+    padding: 5px;
+}
+
+
+.input {
+    background: none;
+    width: 70%;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+}
+
+
+.input:focus {
+    border-color: rgb(20, 118, 148);
+    outline: none;
+}
+
+.search {
+    width: 100%;
+    border: none;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.add-task {
+    /* display: flex; */
+    width: 100%;
+}
