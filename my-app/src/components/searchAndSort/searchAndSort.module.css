@@ -49,5 +49,6 @@
 }
 
 .add-task {
+    /* display: flex; */
     width: 100%;
 }

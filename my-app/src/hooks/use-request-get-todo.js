@@ -6,6 +6,8 @@ export const useRequestGetTodo = () => {
 	const [task, setTask] = useState(null);
 	const [shouldRefresh, setShouldRefresh] = useState(false);
 
+	console.log(task, 'task1');
+
 	useEffect(() => {
 		if (id) {
 			fetch(`http://localhost:3005/todos/${id}`)
@@ -17,11 +19,11 @@ export const useRequestGetTodo = () => {
 		}
 	}, [id, shouldRefresh]); // Обновляем при изменении id или shouldRefresh
 
-	const refreshTask = () => setShouldRefresh((prev) => !prev); // Переключение флага
+	const refreshTodo = () => setShouldRefresh((prev) => !prev); // Переключение флага
 
 	return {
 		task,
 		setTask,
-		refreshTask,
+		refreshTodo,
 	};
 };

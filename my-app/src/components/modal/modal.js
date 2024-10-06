@@ -1,6 +1,6 @@
 import styles from './modal.module.css';
 
-export const ModalLayout = ({
+export const Modal = ({
 	addNewTask,
 	addInputValue,
 	changeAddInputValue,

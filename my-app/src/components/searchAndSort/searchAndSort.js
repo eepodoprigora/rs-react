@@ -1,14 +1,14 @@
+import styles from './searchAndSort.module.css';
+
 import sortUpIcon from '../../assets/sort-up.svg';
 import sortDownIcon from '../../assets/sort-down.svg';
-import { useRequestGetTodos, useRequestSearchAndSortTodos } from '../../hooks';
 
-import styles from './filterAndSort.module.css';
-
-export const FilterAndSort = () => {
-	const { todos } = useRequestGetTodos();
-	const { searchQuery, sortDirection, handleSearchChange, handleSortChange } =
-		useRequestSearchAndSortTodos(todos);
-
+export const SearchAndSort = ({
+	searchQuery,
+	sortDirection,
+	handleSearchChange,
+	handleSortChange,
+}) => {
 	return (
 		<div className="fl">
 			<input

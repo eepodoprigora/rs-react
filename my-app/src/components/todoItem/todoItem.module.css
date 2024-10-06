@@ -43,3 +43,10 @@
 .icon-wrapper:hover {
     opacity: .5;
 }
+
+.task-link {
+    text-decoration: none;
+    color: #fff;
+    width: 100%;
+    cursor: pointer;
+}

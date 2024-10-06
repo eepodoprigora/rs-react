@@ -5,13 +5,13 @@ import {
 } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 
-import { TaskLayout } from './TaskLayout';
+import { TodoItemPageLayout } from './todoItemPageLayout';
 
-export const Task = () => {
+export const TodoItemPage = () => {
 	const { task } = useRequestGetTodo();
 	const navigate = useNavigate();
 
-	console.log(task, 'task1');
+	console.log(task, 'todoitempage');
 
 	const {
 		isEditing,
@@ -24,7 +24,7 @@ export const Task = () => {
 	const { deleteTask } = useRequestDeleteTask();
 
 	return (
-		<TaskLayout
+		<TodoItemPageLayout
 			task={task}
 			isEditing={isEditing}
 			editInputValue={editInputValue}

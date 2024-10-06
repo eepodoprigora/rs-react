@@ -1,6 +1,6 @@
-import styles from './task.module.css';
+import styles from './todoItemPage.module.css';
 
-export const TaskLayout = ({
+export const TodoItemPageLayout = ({
 	task,
 	isEditing,
 	editInputValue,
