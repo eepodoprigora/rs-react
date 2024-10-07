@@ -6,25 +6,26 @@ export const useRequestEditInputValue = () => {
 	const [isEditing, setIsEditing] = useState(null);
 	const [editInputValue, setEditInputValue] = useState('');
 
-	const toggleEditingMode = (id, currentTitle) => {
+	const toggleEditingMode = (id, currentTitle, initialTitle) => {
 		setIsEditing(id);
-		setEditInputValue(currentTitle);
+		setEditInputValue(initialTitle ? initialTitle : currentTitle);
 	};
 
 	const { refreshTodos } = useRequestGetTodos();
 	const { refreshTodo } = useRequestGetTodo();
 
-	const saveEditedTask = (id) => {
-		fetch(`http://localhost:3005/todos/${id}`, {
+	const saveEditedTask = async (id) => {
+		await fetch(`http://localhost:3005/todos/${id}`, {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json;charset=utf-8' },
 			body: JSON.stringify({ title: editInputValue }),
-		}).then(() => {
-			refreshTodo();
-			refreshTodos();
-			setIsEditing(null);
 		});
+		console.log(editInputValue, 'not working', '1');
+		refreshTodo();
+		refreshTodos();
+		setIsEditing(null);
 	};
+
 	return {
 		isEditing,
 		editInputValue,

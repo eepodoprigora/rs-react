@@ -1,25 +1,25 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 
-export const useRequestGetTodo = () => {
-	const { id } = useParams();
+export const useRequestGetTodo = (id) => {
 	const [task, setTask] = useState(null);
 	const [shouldRefresh, setShouldRefresh] = useState(false);
 
-	console.log(task, 'task1');
+	console.log(id, 'id');
 
 	useEffect(() => {
-		if (id) {
-			fetch(`http://localhost:3005/todos/${id}`)
-				.then((response) => response.json())
-				.then((loadedTodo) => {
-					setTask(loadedTodo);
-					console.log(loadedTodo, 'loaded'); // Лог загруженной задачи
-				});
-		}
+		const fetchTodo = async () => {
+			const response = await fetch(`http://localhost:3005/todos/${id}`);
+			const loadedTodo = await response.json();
+			console.log(loadedTodo, id, '2');
+			setTask(loadedTodo);
+		};
+
+		fetchTodo();
 	}, [id, shouldRefresh]); // Обновляем при изменении id или shouldRefresh
 
 	const refreshTodo = () => setShouldRefresh((prev) => !prev); // Переключение флага
+
+	console.log(task, '3');
 
 	return {
 		task,

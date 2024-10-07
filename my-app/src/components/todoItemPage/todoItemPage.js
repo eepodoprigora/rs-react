@@ -6,13 +6,10 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import { TodoItemPageLayout } from './todoItemPageLayout';
+import { useParams } from 'react-router-dom';
 
 export const TodoItemPage = () => {
-	const { task } = useRequestGetTodo();
-	const navigate = useNavigate();
-
-	console.log(task, 'todoitempage');
-
+	const { id } = useParams();
 	const {
 		isEditing,
 		editInputValue,
@@ -20,6 +17,10 @@ export const TodoItemPage = () => {
 		toggleEditingMode,
 		saveEditedTask,
 	} = useRequestEditInputValue();
+	const { task } = useRequestGetTodo(id);
+	const navigate = useNavigate();
+
+	console.log(task, 'todoitempage');
 
 	const { deleteTask } = useRequestDeleteTask();
 
@@ -30,7 +31,7 @@ export const TodoItemPage = () => {
 			editInputValue={editInputValue}
 			setEditInputValue={setEditInputValue}
 			toggleEditingMode={toggleEditingMode}
-			saveEditedTask={(id) => saveEditedTask(id)}
+			saveEditedTask={saveEditedTask}
 			deleteTask={deleteTask}
 			navigate={navigate}
 		/>
