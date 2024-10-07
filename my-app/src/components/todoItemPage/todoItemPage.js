@@ -20,7 +20,7 @@ export const TodoItemPage = () => {
 	const { task } = useRequestGetTodo(id);
 	const navigate = useNavigate();
 
-	console.log(task, 'todoitempage');
+	// console.log(task, 'todoitempage');
 
 	const { deleteTask } = useRequestDeleteTask();
 
