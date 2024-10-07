@@ -43,3 +43,11 @@
 .icon-wrapper:hover {
     opacity: .5;
 }
+
+.input {
+    background-color: unset;
+    border: none;
+    color: #fff;
+    width: 70%;
+    font-size: 16px;
+}

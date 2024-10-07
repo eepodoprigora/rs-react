@@ -1,6 +1,7 @@
 import styles from './app.module.css';
 
 import { Modal } from './components/modal/modal';
+import { TodoContext } from './context/context';
 
 import {
 	useRequestAddInputValue,
@@ -62,15 +63,20 @@ export const App = () => {
 									Сначала нужно что-то добавить
 								</div>
 							) : (
-								<TodosList
-									isEditing={isEditing}
-									editInputValue={editInputValue}
-									toggleEditingMode={toggleEditingMode}
-									saveEditedTask={saveEditedTask}
-									setEditInputValue={setEditInputValue}
-									deleteTask={deleteTask}
-									filteredAndSortedTodos={filteredAndSortedTodos}
-								/>
+								<TodoContext.Provider
+									value={{
+										isEditing,
+										editInputValue,
+										toggleEditingMode,
+										saveEditedTask,
+										setEditInputValue,
+										deleteTask,
+									}}
+								>
+									<TodosList
+										filteredAndSortedTodos={filteredAndSortedTodos}
+									/>
+								</TodoContext.Provider>
 							)}
 
 							<button

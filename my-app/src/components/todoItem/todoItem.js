@@ -4,16 +4,20 @@ import changeIcon from '../../assets/change-icon.svg';
 import deleteIcon from '../../assets/delete-icon.svg';
 import doneIcon from '../../assets/done-icon.svg';
 
-export const TodoItem = ({
-	isEditing,
-	editInputValue,
-	toggleEditingMode,
-	saveEditedTask,
-	setEditInputValue,
-	deleteTask,
-	id,
-	title,
-}) => {
+import { useContext } from 'react';
+
+import { TodoContext } from '../../context/context';
+
+export const TodoItem = ({ id, title }) => {
+	const {
+		isEditing,
+		editInputValue,
+		toggleEditingMode,
+		saveEditedTask,
+		setEditInputValue,
+		deleteTask,
+	} = useContext(TodoContext);
+
 	return (
 		<li className={styles['list-item']} key={id}>
 			{isEditing === id ? (
