@@ -1,8 +1,15 @@
 import { InformationLayout } from './InformationLayout';
-import { store } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurrentPlayer, selectIsDraw, selectIsGameEnded } from '../../selectors';
+
+import { RESTART_GAME } from '../../actions';
 
 export const Information = () => {
-	const { currentPlayer, isGameEnded, isDraw } = store.getState();
+	const currentPlayer = useSelector(selectCurrentPlayer);
+	const isGameEnded = useSelector(selectIsGameEnded);
+	const isDraw = useSelector(selectIsDraw);
+
+	const dispatch = useDispatch();
 
 	const getStatus = () => {
 		if (isGameEnded) {
@@ -17,7 +24,7 @@ export const Information = () => {
 	};
 
 	const handleRestart = () => {
-		store.dispatch({ type: 'RESTART_GAME' });
+		dispatch(RESTART_GAME);
 	};
 	return <InformationLayout handleRestart={handleRestart} getStatus={getStatus} />;
 };
