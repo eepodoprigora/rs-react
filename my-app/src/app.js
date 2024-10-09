@@ -1,46 +1,26 @@
+import { Modal, SearchAndSort, TodosList } from './components';
+import { selectIsLoading, selectTodos } from './selectors';
+import { toggleModalVisibity } from './actions';
+import { getTodos } from './reducers';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+
 import styles from './app.module.css';
 
-import { Modal } from './components/modal/modal';
-
-import {
-	useRequestAddInputValue,
-	useRequestEditInputValue,
-	useRequestDeleteTask,
-	useRequestGetTodos,
-	useRequestSearchAndSortTodos,
-} from './hooks';
-
-import { SearchAndSort } from './components/searchAndSort/searchAndSort';
-import { TodosList } from './components/todosList/todosList';
-
 export const App = () => {
-	const { todos, isLoading, refreshTodos } = useRequestGetTodos();
+	const isLoading = useSelector(selectIsLoading);
+	const todos = useSelector(selectTodos);
 
-	const {
-		addNewTask,
-		addInputValue,
-		changeAddInputValue,
-		isModalOpened,
-		setIsModalOpened,
-	} = useRequestAddInputValue(refreshTodos);
+	const dispatch = useDispatch();
 
-	const {
-		isEditing,
-		editInputValue,
-		toggleEditingMode,
-		saveEditedTask,
-		setEditInputValue,
-	} = useRequestEditInputValue(refreshTodos);
+	useEffect(() => {
+		dispatch(getTodos());
+	}, [dispatch]);
 
-	const { deleteTask } = useRequestDeleteTask(refreshTodos);
-
-	const {
-		searchQuery,
-		sortDirection,
-		handleSearchChange,
-		handleSortChange,
-		filteredAndSortedTodos,
-	} = useRequestSearchAndSortTodos(todos);
+	const onModalOpen = () => {
+		dispatch(toggleModalVisibity(true));
+	};
 
 	return (
 		<>
@@ -51,45 +31,23 @@ export const App = () => {
 						<div className={styles.loader}></div>
 					) : (
 						<>
-							<SearchAndSort
-								searchQuery={searchQuery}
-								sortDirection={sortDirection}
-								handleSearchChange={handleSearchChange}
-								handleSortChange={handleSortChange}
-							/>
+							<SearchAndSort />
 							{todos.length === 0 ? (
 								<div style={{ marginBottom: '20px' }}>
 									Сначала нужно что-то добавить
 								</div>
 							) : (
-								<TodosList
-									isEditing={isEditing}
-									editInputValue={editInputValue}
-									toggleEditingMode={toggleEditingMode}
-									saveEditedTask={saveEditedTask}
-									setEditInputValue={setEditInputValue}
-									deleteTask={deleteTask}
-									filteredAndSortedTodos={filteredAndSortedTodos}
-								/>
+								<TodosList />
 							)}
 
-							<button
-								className="button"
-								onClick={() => setIsModalOpened(true)}
-							>
+							<button className="button" onClick={onModalOpen}>
 								Добавить
 							</button>
 						</>
 					)}
 				</div>
 			</div>
-			<Modal
-				addNewTask={addNewTask}
-				addInputValue={addInputValue}
-				changeAddInputValue={changeAddInputValue}
-				isModalOpened={isModalOpened}
-				setIsModalOpened={setIsModalOpened}
-			/>
+			<Modal />
 		</>
 	);
 };
