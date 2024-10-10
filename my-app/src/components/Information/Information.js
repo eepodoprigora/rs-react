@@ -1,17 +1,13 @@
+import { Component } from 'react';
+import { connect } from 'react-redux';
 import { InformationLayout } from './InformationLayout';
-import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentPlayer, selectIsDraw, selectIsGameEnded } from '../../selectors';
+import { restartGame } from '../../actions';
 
-import { RESTART_GAME } from '../../actions';
+class Information extends Component {
+	getStatus = () => {
+		const { isGameEnded, isDraw, currentPlayer } = this.props;
 
-export const Information = () => {
-	const currentPlayer = useSelector(selectCurrentPlayer);
-	const isGameEnded = useSelector(selectIsGameEnded);
-	const isDraw = useSelector(selectIsDraw);
-
-	const dispatch = useDispatch();
-
-	const getStatus = () => {
 		if (isGameEnded) {
 			if (isDraw) {
 				return 'Ничья';
@@ -23,8 +19,28 @@ export const Information = () => {
 		}
 	};
 
-	const handleRestart = () => {
-		dispatch(RESTART_GAME);
+	handleRestart = () => {
+		this.props.restartGame();
 	};
-	return <InformationLayout handleRestart={handleRestart} getStatus={getStatus} />;
-};
+
+	render() {
+		return (
+			<InformationLayout
+				handleRestart={this.handleRestart}
+				getStatus={this.getStatus}
+			/>
+		);
+	}
+}
+
+const mapStateToProps = (state) => ({
+	currentPlayer: selectCurrentPlayer(state),
+	isGameEnded: selectIsGameEnded(state),
+	isDraw: selectIsDraw(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	restartGame: () => dispatch(restartGame()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Information);

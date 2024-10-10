@@ -1,17 +1,26 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { Component } from 'react';
+import { connect } from 'react-redux';
 
 import { FieldLayout } from './FieldLayout';
-import { SelectField } from '../../selectors';
+import { selectField } from '../../selectors';
 import { makeMove } from '../../actions';
 
-export const Field = () => {
-	const field = useSelector(SelectField);
-
-	const dispatch = useDispatch();
-
-	const handleClick = (index) => {
-		dispatch(makeMove(index));
+class Field extends Component {
+	handleClick = (index) => {
+		this.props.makeMove(index);
 	};
+	render() {
+		const { field } = this.props;
+		return <FieldLayout field={field} handleClick={this.handleClick} />;
+	}
+}
 
-	return <FieldLayout field={field} handleClick={handleClick} />;
-};
+const mapStateToProps = (state) => ({
+	field: selectField(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	makeMove: (index) => dispatch(makeMove(index)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Field);

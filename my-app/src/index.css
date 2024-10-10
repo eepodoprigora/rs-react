@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
 	--accent-color-hue: 236;
 	--accent-color-saturation: 100%;

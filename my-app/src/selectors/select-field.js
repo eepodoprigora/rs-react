@@ -1,1 +1,1 @@
-export const SelectField = (state) => state.field;
+export const selectField = (state) => state.field;

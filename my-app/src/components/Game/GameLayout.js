@@ -1,14 +1,15 @@
-import s from './game.module.css';
+import Information from '../Information/Information';
+import Field from '../Field/Field';
+import { Component } from 'react';
 
-import { Information } from '../Information/Information';
-import { Field } from '../Field/Field';
-
-export const GameLayout = (props) => {
-	return (
-		<div className={s.app}>
-			<h1>Крестики нолики</h1>
-			<Information />
-			<Field field={props.field} handleClick={props.handleClick} />
-		</div>
-	);
-};
+export class GameLayout extends Component {
+	render() {
+		return (
+			<div className="flex flex-col items-center pt-12">
+				<h1 className="text-xl font-semibold mb-2">Крестики нолики</h1>
+				<Information />
+				<Field />
+			</div>
+		);
+	}
+}
